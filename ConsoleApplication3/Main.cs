@@ -32,10 +32,12 @@ namespace BowlingNamespace
         public const string msg_welcome = "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\nWelcome to the Bowling Alley!\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
         public const string msg_illegal_command = "Illegal command. Try Again.";
         public const string msg_instructions = "- To roll your ball, type \"roll\" and the number of dropped pins.\n"
-            + "- To save your progress, type \"save\". You will receive your Game ID when game is saved.\n"
-            + "- To load a game, type \"load\" and your Game ID.\n"
-            + "- To exit the game, type \"exit\".\n"
-            + "\nHave fun!\n";
+                                             + "- To save your progress, type \"save\". You will receive your Game ID when game is saved.\n"
+                                             + "- To load a game, type \"load\" and your Game ID.\n"
+                                             + "- To exit the game, type \"exit\".\n"
+                                             + "\nHave fun!\n";
+        public const string msg_end = "\nYour final score is: {0}!"
+                                    + "\nPress any key to exit...";
 
         //Commands
         public const string cmd_roll = "roll";
@@ -66,7 +68,10 @@ namespace BowlingNamespace
         {
             Console.WriteLine(msg_instructions);
         }
-
+        public static void EndMessage(int score)
+        {
+            Console.WriteLine(string.Format(msg_end, score));
+        }
     }
 
     //=======================================================================================================
@@ -251,8 +256,7 @@ namespace BowlingNamespace
         {
             if(curr_frame_id == 10)
             {
-                Console.WriteLine("Final score is: {0}", curr_score);
-                Console.WriteLine("Press any key to exit...");
+                Globals.EndMessage(curr_score);
                 Console.ReadKey();
             }
         }
