@@ -42,12 +42,31 @@ namespace BowlingNamespace
         public const string msg_spare = "Spare!";
         public const string frame_separator = "------";
 
+        //DB Action Messages
+        public const string msg_db_connect = "Connecting to Database...";
+        public const string msg_db_connect_success = "Connection Succesful!";
+        public const string msg_db_connect_fail = "Failed to connect to DB. You will not be able to save/load games.";
+        public const string msg_game_save = "Saving game to DB...";
+        public const string msg_save_success = "Game Saved! Your Game ID is {0}.";
+        public const string msg_save_fail = "Failed to save to DB.";
+        public const string msg_load_warning = "Loading will overwrite the current game. Are you sure you want to continue? Y/N";
+        public const string msg_loading = "Loading game...";
+        public const string msg_not_loading = "Continuing current game.";
+        public const string msg_load_success = "Game loaded successfully!";
+        public const string msg_load_fail = "Failed to load from DB.";
+
         //Commands
         public const string cmd_roll = "roll";
         public const string cmd_exit = "exit";
         public const string cmd_save = "save";
         public const string cmd_load = "load";
+        public static readonly string[] cmd_yes = { "Y", "y" };
 
+        //===================================================================================================
+        /// <summary>
+        /// DB Connection String Getter
+        /// </summary>
+        //===================================================================================================
         public static string GetSqlConnectionString()
         {
             string res = "Data Source=(local); Initial Catalog=" + server_name
@@ -240,7 +259,7 @@ namespace BowlingNamespace
         {
             if(curr_frame_id == 10)
             {
-                Console.WriteLine(string.Format(Globals.msg_end, curr_score));
+                Console.WriteLine(Globals.msg_end, curr_score);
                 Console.ReadKey();
             }
         }
@@ -337,21 +356,20 @@ namespace BowlingNamespace
             /// <summary>
             /// DB Connection
             /// </summary>
-            /// <returns></returns>
             //===============================================================================================
             internal bool ConnectToDB()
             {
                 cnn = new SqlConnection(Globals.GetSqlConnectionString());
-                Console.WriteLine("Connecting to Database...");
+                Console.WriteLine(Globals.msg_db_connect);
                 try
                 {
                     cnn.Open();
-                    Console.WriteLine("Connection Succesful!");
+                    Console.WriteLine(Globals.msg_db_connect_success);
                     return true;
                 }
                 catch
                 {
-                    Console.WriteLine("Failed to connect to DB.");
+                    Console.WriteLine(Globals.msg_db_connect_fail);
                     return false;
                 }
             }
@@ -370,11 +388,10 @@ namespace BowlingNamespace
             /// <summary>
             /// Saves current state of the game.
             /// </summary>
-            /// <returns></returns>
             //===============================================================================================
             internal bool SaveGame()
             {
-                Console.WriteLine("Saving game to DB...");
+                Console.WriteLine(Globals.msg_game_save);
                 game.game_id = GetGameID();
 
 
@@ -386,12 +403,12 @@ namespace BowlingNamespace
 
                 if (game.game_id != -1 && success)
                 {
-                    Console.WriteLine("Game Saved! Your Game ID is {0}.", game.game_id);
+                    Console.WriteLine(Globals.msg_save_success, game.game_id);
                     return true;
                 }
                 else
                 {
-                    Console.WriteLine("Failed to save to DB.");
+                    Console.WriteLine(Globals.msg_save_fail);
                     return false;
                 }
             }
@@ -537,15 +554,15 @@ namespace BowlingNamespace
             //===============================================================================================
             internal bool LoadGame(int id)
             {
-                Console.WriteLine("Loading will overwrite the current game, are you sure you want to continue? Y/N");
+                Console.WriteLine(Globals.msg_load_warning);
                 string input = Console.ReadLine();
-                if(input == "Y" || input == "y")
+                if(Globals.cmd_yes.Contains(input))
                 {
-                    Console.WriteLine("Loading game...");
+                    Console.WriteLine(Globals.msg_loading);
                 }
                 else
                 {
-                    Console.WriteLine("Continuing current game...");
+                    Console.WriteLine(Globals.msg_not_loading);
                     return false;
                 }
 
@@ -565,12 +582,12 @@ namespace BowlingNamespace
                 {
                     game.InitGame(id, load_curr_score, load_curr_frame_id, load_curr_roll, load_prev_is_spare,
                              load_frames, load_rolls, load_strike_ids);
-                    Console.WriteLine("Game loaded successfully!");
+                    Console.WriteLine(Globals.msg_load_success);
                     return true;
                 }
                 else
                 {
-                    Console.WriteLine("Failed to load from DB.");
+                    Console.WriteLine(Globals.msg_load_fail);
                     return false;
                 }
             }
