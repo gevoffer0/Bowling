@@ -40,6 +40,7 @@ namespace BowlingNamespace
                                     + "\nPress any key to exit...";
         public const string msg_strike = "Strike!!!";
         public const string msg_spare = "Spare!";
+        public const string msg_illegal_pins = "Illegal number of pins. Try Again.";
         public const string frame_separator = "------";
 
         //DB Action Messages
@@ -235,13 +236,23 @@ namespace BowlingNamespace
         //===================================================================================================
         private bool roll(int pins)
         {
-            rolls.Add(pins);
             if (frames.Count <= curr_frame_id)
             {
                 frames.Add(new Frame(curr_frame_id));
             }
 
             Frame curr_frame = frames[curr_frame_id];
+
+            //Verify legal roll
+            if(pins > 10 || pins < 0 ||
+              (curr_frame.GetFrameRollScores().Count() == 1 && curr_frame.GetFrameRollScores().First() + pins > 10))
+            {
+                Console.WriteLine(Globals.msg_illegal_pins);
+                curr_roll--;
+                return false;
+            }
+
+            rolls.Add(pins);
             curr_frame.UpdateFrameScore(pins, curr_roll, true);
 
             HandleSpare();
