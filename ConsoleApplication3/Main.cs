@@ -52,26 +52,6 @@ namespace BowlingNamespace
                        + "; Password=" + db_password;
             return res;
         }
-
-        //Message Functions
-        public static void WelcomeMessage()
-        {
-            Console.WriteLine(msg_welcome);
-        }
-
-        public static void ErrorMessage()
-        {
-            Console.WriteLine(msg_illegal_command);
-        }
-
-        public static void InstructionsMessage()
-        {
-            Console.WriteLine(msg_instructions);
-        }
-        public static void EndMessage(int score)
-        {
-            Console.WriteLine(string.Format(msg_end, score));
-        }
     }
 
     //=======================================================================================================
@@ -152,8 +132,8 @@ namespace BowlingNamespace
         public bool GameStart()
         {
             dbh.ConnectToDB();
-            Globals.WelcomeMessage();
-            Globals.InstructionsMessage();
+            Console.WriteLine(Globals.msg_welcome);
+            Console.WriteLine(Globals.msg_instructions);
             return true;
         }
 
@@ -175,7 +155,7 @@ namespace BowlingNamespace
                 switch (curr_input[0])
                 {
                     case Globals.cmd_roll:
-                        if(!Int32.TryParse(curr_input[1], out int_param)) { Globals.ErrorMessage(); }
+                        if(!Int32.TryParse(curr_input[1], out int_param)) { Console.WriteLine(Globals.msg_illegal_command); }
                         if (roll(int_param))
                         {
                             curr_frame_id++;
@@ -190,11 +170,11 @@ namespace BowlingNamespace
                         dbh.SaveGame();
                         break;
                     case Globals.cmd_load:
-                        if (!Int32.TryParse(curr_input[1], out int_param)) { Globals.ErrorMessage(); }
+                        if (!Int32.TryParse(curr_input[1], out int_param)) { Console.WriteLine(Globals.msg_illegal_command); }
                         dbh.LoadGame(int_param);
                         break;
                     default:
-                        Globals.ErrorMessage();
+                        Console.WriteLine(Globals.msg_illegal_command);
                         break;
                 }
             }
@@ -256,7 +236,7 @@ namespace BowlingNamespace
         {
             if(curr_frame_id == 10)
             {
-                Globals.EndMessage(curr_score);
+                Console.WriteLine(string.Format(Globals.msg_end, curr_score));
                 Console.ReadKey();
             }
         }
