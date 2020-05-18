@@ -38,6 +38,9 @@ namespace BowlingNamespace
                                              + "\nHave fun!\n";
         public const string msg_end = "\nYour final score is: {0}!"
                                     + "\nPress any key to exit...";
+        public const string msg_strike = "Strike!!!";
+        public const string msg_spare = "Spare!";
+        public const string frame_separator = "------";
 
         //Commands
         public const string cmd_roll = "roll";
@@ -158,6 +161,7 @@ namespace BowlingNamespace
                         if(!Int32.TryParse(curr_input[1], out int_param)) { Console.WriteLine(Globals.msg_illegal_command); }
                         if (roll(int_param))
                         {
+                            Console.WriteLine(Globals.frame_separator);
                             curr_frame_id++;
                         }
                         curr_roll++;
@@ -284,9 +288,15 @@ namespace BowlingNamespace
             {
                 if (curr_frame.IsStrike())
                 {
+                    Console.WriteLine(Globals.msg_strike);
                     strike_ids.Add(curr_frame_id);
                 }
-                prev_is_spare = curr_frame.IsSpare();
+
+                else if (curr_frame.IsSpare())
+                {
+                    Console.WriteLine(Globals.msg_spare);
+                    prev_is_spare = true;
+                }
 
                 curr_score += curr_frame.GetFrameScore();
                 return true;
