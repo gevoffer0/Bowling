@@ -229,7 +229,7 @@ namespace BowlingNamespace
         }
         //===================================================================================================
         /// <summary>
-        /// 
+        /// Single ball roll logic.
         /// </summary>
         /// <param name="pins"></param>
         /// <returns></returns>
