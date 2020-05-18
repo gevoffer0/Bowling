@@ -1,0 +1,3 @@
+C:\Users\Gev Offer\source\repos\Bowling\ConsoleApplication3\bin\Debug\ConsoleApplication3.exe.config
+C:\Users\Gev Offer\source\repos\Bowling\ConsoleApplication3\obj\Debug\ConsoleApplication3.exe
+C:\Users\Gev Offer\source\repos\Bowling\ConsoleApplication3\obj\Debug\ConsoleApplication3.pdb
